@@ -1,7 +1,8 @@
 # RetailInsights — SQL & Power BI Business Analytics
 
 ## Dashboard Preview
-[ PLACEHOLDER: INSERT DASHBOARD SCREENSHOT HERE ]
+<img width="1245" height="712" alt="image" src="https://github.com/user-attachments/assets/057af300-7ffd-4795-901f-c4275f8ef295" />
+
 
 ## Project Overview
 RetailInsights is an end-to-end data analytics project built to analyze e-commerce performance. It showcases advanced SQL analytical querying, a Python-based ETL pipeline, a simplified Medallion-style architecture (Raw → Staging → Curated), and a business-facing Power BI dashboard.
