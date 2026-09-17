@@ -1,11 +1,11 @@
 # Retail Data Warehouse — E-Commerce Analytics Data Pipeline
 
-![Retail Data Warehouse Dashboard](dashboard_preview.png)
+[ PLACEHOLDER: INSERT DASHBOARD SCREENSHOT HERE ]
 
-## 📌 Project Overview
-Retail Data Warehouse is an end-to-end data engineering and analytics project built to analyze 100,000+ real e-commerce orders from the Olist dataset. It showcases a modern **Medallion Data Architecture (Raw → Staging → Curated)**, advanced SQL analytical queries, a fully automated Python ETL pipeline, and a business-facing Power BI dashboard.
+## Project Overview
+Retail Data Warehouse is an end-to-end data engineering and analytics project built to analyze 100,000+ real e-commerce orders from the Olist dataset. It showcases a modern Medallion Data Architecture (Raw → Staging → Curated), advanced SQL analytical queries, a fully automated Python ETL pipeline, and a business-facing Power BI dashboard.
 
-## 🎯 Business Problem
+## Business Problem
 The project aims to answer critical strategic questions for an e-commerce marketplace:
 1. Is revenue growth accelerating or decelerating?
 2. Which states and product categories are driving the highest revenue?
@@ -13,7 +13,7 @@ The project aims to answer critical strategic questions for an e-commerce market
 4. What does customer retention (cohort drop-off) look like month-over-month?
 5. Who are the most valuable customers, and who is at risk of churning?
 
-## 🛠️ Tech Stack
+## Tech Stack
 * **Data Engineering & ETL:** Python (`pandas`), DuckDB (in-process OLAP database)
 * **Cloud Execution Proof-of-Concept:** Databricks CLI, Databricks Serverless SQL Warehouse, REST API
 * **Analytics & Data Modeling:** Advanced SQL (Window Functions, CTEs, Aggregations)
@@ -22,9 +22,19 @@ The project aims to answer critical strategic questions for an e-commerce market
 
 ---
 
-## 🏗️ Data Architecture
+## Data Architecture
 
-The project utilizes a modern **Medallion Architecture**:
+The project utilizes a modern Medallion Architecture:
+
+```mermaid
+flowchart LR
+    A[Raw CSV Data] -->|Python/DuckDB| B[(Bronze / Raw)]
+    B -->|Type Casting / Deduplication| C[(Silver / Staging)]
+    C -->|Aggregations / Window Functions| D[(Gold / Curated)]
+    D -->|CSV Export| E[Power BI Dashboard]
+    C -.->|Databricks CLI| F[Unity Catalog Volume]
+    F -.->|REST API| G[Serverless SQL Warehouse]
+```
 
 1. **Bronze (Raw):** Ingestion of 9 raw `.csv` datasets directly into DuckDB.
 2. **Silver (Staging):** Data cleaning and normalization in Python/SQL.
@@ -35,7 +45,7 @@ The project utilizes a modern **Medallion Architecture**:
 
 ---
 
-## 📊 SQL Analysis & Techniques Used
+## SQL Analysis & Techniques Used
 
 The curated "Gold" layer relies on 6 advanced SQL scripts (located in `/sql/`):
 
@@ -48,7 +58,7 @@ The curated "Gold" layer relies on 6 advanced SQL scripts (located in `/sql/`):
 
 ---
 
-## 📈 Key Business Findings
+## Key Business Findings
 
 1. **Revenue Deceleration:** After explosive growth throughout 2017, revenue plateaued and contracted in early 2018. The strategy must pivot from aggressive acquisition to maximizing the Lifetime Value (LTV) of the existing base.
 2. **Severe Post-Purchase Churn:** Cohort analysis shows near-zero retention following a customer's first purchase month. An automated CRM lifecycle campaign targeting the second purchase is critical.
@@ -59,26 +69,25 @@ The curated "Gold" layer relies on 6 advanced SQL scripts (located in `/sql/`):
 
 ---
 
-## ☁️ Cloud Execution Proof-of-Concept (Databricks)
+## Cloud Execution Proof-of-Concept (Databricks)
 
 While DuckDB powers the local pipeline for rapid iteration, this project includes a proof-of-concept for cloud scalability using **Databricks Serverless**. 
 
 I orchestrated the cloud infrastructure programmatically using the Databricks CLI and REST API (headless execution):
 1. Authenticated the Databricks CLI via Personal Access Token (PAT).
-2. Uploaded local staging tables to a **Unity Catalog Volume**.
-3. Spun up a **Serverless SQL Warehouse** via the API and created tables using `read_files()`.
+2. Uploaded local staging tables to a Unity Catalog Volume.
+3. Spun up a Serverless SQL Warehouse via the API and created tables using `read_files()`.
 4. Executed the heavy RFM Segmentation query remotely and saved the JSON payload back to local disk (`databricks_rfm_output.json`).
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 retail-data-warehouse/
 ├── .gitignore
 ├── README.md
 ├── business_findings.md              # Executive summary of insights
-├── dashboard_preview.png             # Dashboard screenshot
 ├── dashboard/
 │   ├── RetailPulse_Dashboard.pbix    # Power BI file
 │   └── data/                         # Curated CSVs powering the dashboard
@@ -94,16 +103,16 @@ retail-data-warehouse/
 
 ---
 
-## 🚀 Setup & Run Instructions
+## Setup & Run Instructions
 
 1. Clone the repository.
 2. Ensure you have Python installed, then install dependencies: `pip install duckdb pandas`
-3. Download the [Olist E-Commerce Dataset from Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) and place the `.csv` files in a `/data/` folder in the root directory (this folder is `.gitignore`'d).
+3. Download the [Olist E-Commerce Dataset from Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) and place the `.csv` files in a `/data/` folder in the root directory (this folder is ignored by git).
 4. Run `cd notebooks` followed by `python 02_duckdb_pipeline.py` to build the local DuckDB data warehouse.
 5. Run `python 03_sql_analysis.py` to execute the SQL queries and generate the curated `.csv` files for Power BI.
-6. Open `dashboard/RetailPulse_Dashboard.pbix` in Power BI Desktop and click **Refresh** to load the data.
+6. Open `dashboard/RetailPulse_Dashboard.pbix` in Power BI Desktop and click Refresh to load the data.
 
-## ⚠️ Limitations & Future Improvements
+## Limitations & Future Improvements
 * **BI Aggregations:** Currently, Power BI utilizes default aggregations on the flat curated tables. Future iterations should implement a true Star Schema (Fact/Dimension tables) with explicit DAX measures for greater flexibility.
 * **Orchestration:** The Python scripts are currently run manually sequentially. Implementing Apache Airflow or Mage.ai would provide proper DAG orchestration and failure retries.
 * **Data Quality Checks:** Adding assertions (e.g., checking for nulls or negative revenue) between pipeline stages would improve robustness.
