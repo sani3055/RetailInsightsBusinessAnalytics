@@ -1,0 +1,33 @@
+# Environment Variables
+.env
+.env.*
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+
+# Databricks
+.databrickscfg
+databricks.exe
+
+# Data & Temp files
+*.parquet
+*.db
+*.duckdb
+/data/
+*.zip
+
+# Allow curated CSVs for dashboard
+!dashboard/data/*.csv
+
+# Ignore raw/temp JSONs
+temp_query.json
+rfm_query.json
+setup_query.json
+test.json

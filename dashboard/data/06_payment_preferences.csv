@@ -1,0 +1,14 @@
+order_value_tier,primary_payment_type,num_orders
+High (>$200),credit_card,16108
+High (>$200),boleto,3340
+High (>$200),voucher,589
+High (>$200),debit_card,242
+Low (<$50),credit_card,11645
+Low (<$50),boleto,4043
+Low (<$50),voucher,851
+Low (<$50),debit_card,368
+Low (<$50),not_defined,3
+Medium ($50-$200),credit_card,46506
+Medium ($50-$200),boleto,12401
+Medium ($50-$200),voucher,2426
+Medium ($50-$200),debit_card,918
