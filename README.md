@@ -97,7 +97,7 @@ I orchestrated the cloud infrastructure programmatically using the Databricks CL
 ## Project Structure
 
 ```text
-retailpulse-analytics/
+RetailInsightsBusinessAnalytics/
 ├── .gitignore
 ├── README.md
 ├── business_findings.md              # Executive summary of insights
